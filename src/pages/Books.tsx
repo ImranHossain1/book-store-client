@@ -1,4 +1,19 @@
+import BookTable from '@/components/BookTable';
+import { useGetBooksQuery } from '@/redux/features/books/bookApi';
+import { IBooks } from '@/types/globalTypes';
+
 const Books = () => {
+  const { data, isLoading, error } = useGetBooksQuery(undefined);
+
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 border-opacity-25 h-16 w-16"></div>
+        <p className="ml-2 text-blue-500">Loading...</p>
+      </div>
+    );
+  }
+  const books = data?.data;
   return (
     <div className="">
       <div className="mt-10 w-full">
@@ -61,6 +76,13 @@ const Books = () => {
                   <th>Action</th>
                 </tr>
               </thead>
+              {books?.map((book: IBooks, index: number) => (
+                <BookTable
+                  book={book}
+                  key={index}
+                  index={index + 1}
+                ></BookTable>
+              ))}
             </table>
           </div>
         </div>

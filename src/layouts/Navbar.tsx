@@ -10,7 +10,7 @@ import {
   DropdownMenuContent,
 } from '../components/ui/dropdown-menu';
 import { HiOutlineSearch } from 'react-icons/hi';
-import Cart from '../components/Cart';
+
 import logo from '../assets/images/technet-logo.png';
 
 export default function Navbar() {
@@ -43,9 +43,9 @@ export default function Navbar() {
                   <HiOutlineSearch size="25" />
                 </Button>
               </li>
-              <li>
+              {/* <li>
                 <Cart />
-              </li>
+              </li> */}
               <li className="ml-5">
                 <DropdownMenu>
                   <DropdownMenuTrigger className="outline-none">

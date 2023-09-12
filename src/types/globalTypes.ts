@@ -1,10 +1,24 @@
-export interface IProduct {
-  _id: number;
-  name: string;
-  image: string;
-  price: number;
-  features: string[];
-  status: boolean;
-  rating: number;
-  quantity?: number;
+export interface IBooks {
+  _id?: number;
+  title: string;
+  author: string;
+  genre: string;
+  publishDate: string;
+}
+
+export interface iWishlist {
+  _id?: string;
+  userEmail: string;
+  bookId: string;
+  title: string;
+  success: boolean;
+}
+
+export interface iReadingList {
+  _id?: string;
+  userEmail: string;
+  bookId: string;
+  title: string;
+  success: boolean;
+  readingComplete: boolean;
 }
