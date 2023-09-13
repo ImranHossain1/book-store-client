@@ -1,51 +1,39 @@
-import {
-  useSingleBookQuery,
-  useUpdateBookMutation,
-} from '@/redux/features/books/bookApi';
-import { useAppSelector } from '@/redux/hook';
-import { useState } from 'react';
-import { toast } from 'react-hot-toast';
-import { useNavigate, useParams } from 'react-router-dom';
+import { usePostBookMutation } from '@/redux/features/books/bookApi';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 
-const UpdateBook = () => {
-  const { id } = useParams();
-  const navigate = useNavigate();
-  const { data: book, isLoading } = useSingleBookQuery(id);
-  const [updateBook] = useUpdateBookMutation();
-
+const AddNewBook = () => {
   const [formData, setFormData] = useState({
-    title: book?.data?.title || '',
-    author: book?.data?.author || '',
-    genre: book?.data?.genre || '',
-    publicationDate: book?.data?.publicationDate || '',
+    title: '',
+    author: '',
+    genre: '',
+    publicationDate: '',
   });
 
-  const handleUpdateBook = (event: React.FormEvent<HTMLFormElement>) => {
+  const [book, { isSuccess, isLoading }] = usePostBookMutation();
+  const handleAddBook = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
 
-    console.log(formData);
     const { title, author, genre, publicationDate } = formData;
-
     const options = {
-      id,
       data: { title, author, genre, publicationDate },
     };
-    //console.log(options);
-    updateBook(options)
-      .unwrap() // Unwrap the mutation result
-      .then(() => {
-        toast.success('Book Updated Successfully!');
-        navigate('/books');
-      })
-      .catch((error) => {
-        console.error('Error updating book:', error);
-      });
+    //console.log(publicationDate);
+    book(options);
   };
 
-  const handleInputBlur = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = event.target;
-    setFormData({ ...formData, [name]: value });
-  };
+  useEffect(() => {
+    if (isSuccess === true) {
+      toast.success('Book Added Successfully!');
+      // Reset the input fields
+      setFormData({
+        title: '',
+        author: '',
+        genre: '',
+        publicationDate: '',
+      });
+    }
+  }, [isSuccess]);
 
   if (isLoading) {
     return (
@@ -56,14 +44,22 @@ const UpdateBook = () => {
     );
   }
 
+  const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = event.target;
+    setFormData({
+      ...formData,
+      [name]: value,
+    });
+  };
+
   return (
     <div className="w-full md:my-12 my-8">
       <form
-        onSubmit={handleUpdateBook}
+        onSubmit={handleAddBook}
         className="w-10/12 md:w-4/12 mx-auto border p-3 md:p-8"
       >
-        <h2 className="text-2xl text-center font-bold text-red-800">
-          Edit This Book
+        <h2 className="text-2xl text-center font-bold text-blue-800">
+          Add A New Book
         </h2>
         <div className="form-control w-full my-3">
           <label className="label">
@@ -72,10 +68,10 @@ const UpdateBook = () => {
           <input
             name="title"
             type="text"
-            defaultValue={book?.data?.title}
-            onBlur={handleInputBlur}
+            onChange={handleInputChange}
             placeholder="Enter Title"
             className="input input-bordered w-full"
+            value={formData.title}
           />
         </div>
         <div className="form-control w-full my-3">
@@ -85,10 +81,10 @@ const UpdateBook = () => {
           <input
             name="author"
             type="text"
-            defaultValue={book?.data?.author}
-            onBlur={handleInputBlur}
+            onChange={handleInputChange}
             placeholder="Enter Author"
             className="input input-bordered w-full"
+            value={formData.author}
           />
         </div>
         <div className="form-control w-full my-3">
@@ -98,10 +94,10 @@ const UpdateBook = () => {
           <input
             name="genre"
             type="text"
-            defaultValue={book?.data?.genre}
-            onBlur={handleInputBlur}
+            onChange={handleInputChange}
             placeholder="Enter Genre"
             className="input input-bordered w-full"
+            value={formData.genre}
           />
         </div>
         <div className="form-control w-full my-3">
@@ -111,15 +107,15 @@ const UpdateBook = () => {
           <input
             name="publicationDate"
             type="date"
-            defaultValue={book?.data?.publicationDate}
-            onBlur={handleInputBlur}
+            onChange={handleInputChange}
             placeholder="Enter Publish Date"
             className="input input-bordered w-full"
+            value={formData.publicationDate}
           />
         </div>
         <div className="form-control w-full mt-6">
-          <button className="btn btn-active bg-red-800 hover:bg-red-600 text-white">
-            Add The Book
+          <button className="btn btn-active bg-blue-800 hover:bg-blue-600 text-white">
+            Add Now
           </button>
         </div>
       </form>
@@ -127,4 +123,4 @@ const UpdateBook = () => {
   );
 };
 
-export default UpdateBook;
+export default AddNewBook;
