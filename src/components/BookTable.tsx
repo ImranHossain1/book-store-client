@@ -16,7 +16,7 @@ const BookTable = ({ book, index }: IProps) => {
         </td>
         <td>{book?.author}</td>
         <td>{book?.genre}</td>
-        <td>{book?.publishDate}</td>
+        <td>{book?.publicationDate}</td>
         <td>
           <Link to={`/book-details/${book?._id}`}>
             <button className="btn btn-sm bg-blue-800 hover:bg-blue-600 text-white">

@@ -13,6 +13,7 @@ const Books = () => {
       </div>
     );
   }
+  console.log(data.data);
   const books = data?.data;
   return (
     <div className="">

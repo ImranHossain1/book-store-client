@@ -3,7 +3,7 @@ export interface IBooks {
   title: string;
   author: string;
   genre: string;
-  publishDate: string;
+  publicationDate: string;
 }
 
 export interface iWishlist {
