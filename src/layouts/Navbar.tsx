@@ -38,11 +38,7 @@ export default function Navbar() {
                   <Link to="/addNewBook">Add Book</Link>
                 </Button>
               </li>
-              <li>
-                <Button variant="ghost">
-                  <HiOutlineSearch size="25" />
-                </Button>
-              </li>
+
               {/* <li>
                 <Cart />
               </li> */}

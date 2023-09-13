@@ -1,9 +1,21 @@
 import BookTable from '@/components/BookTable';
 import { useGetBooksQuery } from '@/redux/features/books/bookApi';
 import { IBooks } from '@/types/globalTypes';
+import { SetStateAction, useState } from 'react';
 
 const Books = () => {
-  const { data, isLoading, error } = useGetBooksQuery(undefined);
+  const [page, setPage] = useState(1); // Default page number
+  const [limit, setLimit] = useState(10); // Default limit
+  const [sortOrder, setSortOrder] = useState('asc'); // Default sorting order
+  const [searchTerm, setSearchTerm] = useState(''); // Default sorting order
+
+  const options = {
+    page,
+    limit,
+    sortOrder,
+    searchTerm,
+  };
+  const { data, isLoading, error } = useGetBooksQuery(options);
 
   if (isLoading) {
     return (
@@ -13,7 +25,28 @@ const Books = () => {
       </div>
     );
   }
-  console.log(data.data);
+  const handlePageChange = (newPage: number) => {
+    setPage(newPage);
+  };
+
+  const handleLimitChange = (newLimit: number) => {
+    setLimit(newLimit);
+  };
+
+  const handleSortOrderChange = (newSortOrder: string) => {
+    setSortOrder(newSortOrder);
+  };
+  const handleSearchTermChange = (e: {
+    target: { value: SetStateAction<string> };
+  }) => {
+    setSearchTerm(e.target.value);
+  };
+  console.log(data);
+  const total = Math.ceil(data.meta.total / data.meta.limit);
+
+  // Create an array of numbers from 1 to total
+  const pageNumbers = Array.from({ length: total }, (_, index) => index + 1);
+
   const books = data?.data;
   return (
     <div className="">
@@ -29,35 +62,35 @@ const Books = () => {
               type="text"
               placeholder="Search By Name Or Author Or Genre"
               className="input input-bordered input-secondary w-full"
+              value={searchTerm}
+              onChange={handleSearchTermChange}
             />
           </div>
           <div className="md:flex items-center">
             <div className="p-2">
-              <select className="select select-secondary w-full">
-                <option disabled value="">
-                  Any Publication Year
-                </option>
-                <option value="2023">2023</option>
-                <option value="2022">2022</option>
-                <option value="2021">2021</option>
-                <option value="2020">2020</option>
-                <option value="2019">2019</option>
-                <option value="2018">2018</option>
-                <option value="2017">2017</option>
-              </select>
+              <div className="p-2">
+                {/* Limit selection */}
+                <select
+                  className="select select-secondary w-full"
+                  value={limit}
+                  onChange={(e) => handleLimitChange(parseInt(e.target.value))}
+                >
+                  <option value="10">10 per page</option>
+                  <option value="20">20 per page</option>
+                  <option value="50">50 per page</option>
+                </select>
+              </div>
             </div>
             <div className="p-2">
               <div className="p-2">
-                <select className="select select-secondary w-full">
-                  <option disabled value="">
-                    All Genres
-                  </option>
-                  <option value="Fiction">Fiction</option>
-                  <option value="History">History</option>
-                  <option value="Science">Science</option>
-                  <option value="Thriller">Thriller</option>
-                  <option value="Fantasy">Fantasy</option>
-                  <option value="Poem">Poem</option>
+                {/* Sort order selection */}
+                <select
+                  className="select select-secondary w-full"
+                  value={sortOrder}
+                  onChange={(e) => handleSortOrderChange(e.target.value)}
+                >
+                  <option value="asc">Ascending</option>
+                  <option value="desc">Descending</option>
                 </select>
               </div>
             </div>
@@ -85,6 +118,18 @@ const Books = () => {
                 ></BookTable>
               ))}
             </table>
+            {/* Pagination controls */}
+            <div className="flex justify-center mt-5 space-x-4">
+              {pageNumbers.map((pageNumber) => (
+                <button
+                  key={pageNumber}
+                  className="join-item btn"
+                  onClick={() => handlePageChange(pageNumber)}
+                >
+                  {pageNumber}
+                </button>
+              ))}
+            </div>
           </div>
         </div>
       </div>

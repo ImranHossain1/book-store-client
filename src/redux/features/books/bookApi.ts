@@ -1,9 +1,16 @@
 import { api } from '@/redux/api/apiSlice';
 
+type IBookSort = {
+  page: number;
+  limit: number;
+  sortOrder: string;
+  searchTerm: string;
+};
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
     getBooks: builder.query({
-      query: () => '/books',
+      query: (options: IBookSort) =>
+        `/books?page=${options.page}&limit=${options.limit}&sortOrder=${options.sortOrder}&searchTerm=${options.searchTerm}`,
       providesTags: ['book'],
     }),
     singleBook: builder.query({
