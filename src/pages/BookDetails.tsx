@@ -1,3 +1,4 @@
+import BookReview from '@/components/BookReview';
 import {
   useDeleteBookMutation,
   useSingleBookQuery,
@@ -68,7 +69,7 @@ const BookDetails = () => {
           </div>
         </div>
       </div>
-
+      <BookReview id={id!} />
       {/* Delete Confirmation Modal */}
       {isDeleteModalOpen && (
         <div className="fixed z-10 inset-0 overflow-y-auto">
