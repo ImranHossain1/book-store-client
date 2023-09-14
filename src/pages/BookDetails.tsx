@@ -1,9 +1,17 @@
 import BookReview from '@/components/BookReview';
 import {
   useDeleteBookMutation,
+  useGetWishlistQuery,
+  usePostWishlistMutation,
   useSingleBookQuery,
 } from '@/redux/features/books/bookApi';
-import { useState } from 'react';
+import {
+  useGetPlanlistQuery,
+  usePostPlanlistMutation,
+} from '@/redux/features/planToRead/planApi';
+import { PlanlistItem, WishlistItem } from '@/types/globalTypes';
+import { useEffect, useState } from 'react';
+import toast from 'react-hot-toast';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 
 const BookDetails = () => {
@@ -11,8 +19,27 @@ const BookDetails = () => {
   const navigate = useNavigate();
   const { data: book, isLoading } = useSingleBookQuery(id);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
+  const [wishlistData, { isSuccess: wishSuccess, isLoading: wishLoading }] =
+    usePostWishlistMutation();
+  const [addToPlanData, { isSuccess: planSuccess, isLoading: planLoading }] =
+    usePostPlanlistMutation();
+  const { data: wish } = useGetWishlistQuery({});
+  const { data: plan } = useGetPlanlistQuery({});
   const [deleteBook] = useDeleteBookMutation();
-  if (isLoading) {
+  useEffect(() => {
+    if (wishSuccess === true || planSuccess) {
+      toast.success('Book added to your wishlist!');
+    }
+  }, [wishSuccess, planSuccess]);
+  if (isLoading || wishLoading) {
+    return (
+      <div className="flex justify-center items-center h-screen">
+        <div className="animate-spin rounded-full border-t-4 border-blue-500 border-opacity-25 h-16 w-16"></div>
+        <p className="ml-2 text-blue-500">Loading...</p>
+      </div>
+    );
+  }
+  if (planLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full border-t-4 border-blue-500 border-opacity-25 h-16 w-16"></div>
@@ -21,6 +48,12 @@ const BookDetails = () => {
     );
   }
   // State to handle confirmation modal
+  const isBookInWishlist = wish?.data?.some(
+    (wishlistItem: WishlistItem) => wishlistItem?.book?._id === id
+  );
+  const isBookInPlanlist = plan?.data?.some(
+    (planlistItem: PlanlistItem) => planlistItem?.book?._id === id
+  );
 
   const handleBookDelete = async (idToDelete: string | undefined) => {
     try {
@@ -32,6 +65,14 @@ const BookDetails = () => {
     }
   };
 
+  const handleAddWishList = () => {
+    const bookId = id;
+    wishlistData(bookId);
+  };
+  const handleAddPlanList = () => {
+    const bookId = id;
+    addToPlanData(bookId);
+  };
   const openDeleteModal = () => {
     setIsDeleteModalOpen(true);
   };
@@ -54,15 +95,43 @@ const BookDetails = () => {
           <p>Publication Date : {book?.data?.publicationDate}</p>
 
           <div className="card-actions justify-start mt-4">
+            <div>
+              <button
+                onClick={() => handleAddWishList()}
+                className={`btn font-mono bg-red-900 font-normal hover:bg-red-700 btn-sm text-white ${
+                  isBookInWishlist ? 'btn-disabled' : '' // Add btn-disabled class if the book is in the wishlist
+                }`}
+                disabled={isBookInWishlist} // Disable the button if the book is in the wishlist
+              >
+                {isBookInWishlist ? 'Already in Wishlist' : 'WishList'}
+              </button>
+            </div>
+            <div>
+              <button
+                onClick={() => handleAddPlanList()}
+                className={`btn font-mono bg-green-900 font-normal hover:bg-red-700 btn-sm text-white ${
+                  isBookInPlanlist ? 'btn-disabled' : '' // Add btn-disabled class if the book is in the wishlist
+                }`}
+                disabled={isBookInPlanlist} // Disable the button if the book is in the wishlist
+              >
+                {isBookInPlanlist
+                  ? 'This book alreay in your plan list'
+                  : 'Add to your plan'}
+              </button>
+            </div>
+          </div>
+          <div className="ml-auto">
+            {' '}
+            {/* This will push the buttons to the right */}
             <Link
               to={`/update-book/${book?.data?._id}`}
-              className="btn bg-red-900 font-bold hover:bg-red-700  btn-sm text-white"
+              className="btn bg-blue-900 font-bold hover:bg-blue-700 btn-sm text-white"
             >
               Edit
             </Link>
             <button
               onClick={openDeleteModal}
-              className="btn bg-red-900  font-bold hover:bg-red-700 btn-sm text-white"
+              className="btn bg-red-900 font-bold hover:bg-red-700 btn-sm text-white ml-2"
             >
               Delete
             </button>

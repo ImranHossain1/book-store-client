@@ -1,7 +1,7 @@
 import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 
-import logo from '../assets/images/technet-logo.png';
+import logo from '../assets/images/book-logo.png';
 import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { signOut } from 'firebase/auth';
@@ -19,15 +19,14 @@ export default function Navbar() {
     });
   };
 
-  const handleNav = () => {
-    setNav(!nav);
-  };
   return (
     <nav className="w-full h-16 fixed top backdrop-blur-lg z-10">
       <div className="h-full w-full bg-white/60">
         <div className="flex items-center justify-between w-full md:max-w-7xl h-full mx-auto ">
           <div>
-            <img className="h-8" src={logo} alt="log" />
+            <Link to="/">
+              <img className="h-16" src={logo} alt="log" />
+            </Link>
           </div>
           <div>
             <ul className="flex items-center">
@@ -59,6 +58,16 @@ export default function Navbar() {
                       <Link to="/addNewBook">Add Book</Link>
                     </Button>
                   </li>
+                  <li>
+                    <Button variant="link" asChild>
+                      <Link to="/wishlist">My Wishlist</Link>
+                    </Button>
+                  </li>
+                  <li>
+                    <Button variant="link" asChild>
+                      <Link to="/readlist">Reading List</Link>
+                    </Button>
+                  </li>
 
                   <li
                     onClick={handleLogout}
@@ -68,10 +77,6 @@ export default function Navbar() {
                   </li>
                 </>
               )}
-
-              {/* <li>
-                <Cart />
-              </li> */}
             </ul>
           </div>
         </div>

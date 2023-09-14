@@ -1,6 +1,5 @@
 import { api } from '@/redux/api/apiSlice';
-
-
+import Cookies from 'js-cookie';
 type IBookSort = {
   page: number;
   limit: number;
@@ -40,8 +39,36 @@ const bookApi = api.injectEndpoints({
         method: 'DELETE',
       }),
       invalidatesTags: ['book'],
-    })
-
+    }),
+    postWishlist: builder.mutation({
+      query: (id) => ({
+        url: `/wish/create-wish/${id}`,
+        method: 'POST',
+        headers: {
+          Authorization: `${Cookies.get('refreshToken') || ''}`,
+        },
+      }),
+      invalidatesTags: ['book'],
+    }),
+    deleteWishlist: builder.mutation({
+      query: (id) => ({
+        url: `/wish/${id}`,
+        method: 'DELETE',
+        headers: {
+          Authorization: `${Cookies.get('refreshToken') || ''}`,
+        },
+      }),
+      invalidatesTags: ['book'],
+    }),
+    getWishlist: builder.query({
+      query: () => ({
+        url: `/wish`,
+        headers: {
+          Authorization: `${Cookies.get('refreshToken') || ''}`,
+        },
+      }),
+      providesTags: ['book'],
+    }),
   }),
 });
 
@@ -51,4 +78,7 @@ export const {
   useUpdateBookMutation,
   useDeleteBookMutation,
   usePostBookMutation,
+  usePostWishlistMutation,
+  useGetWishlistQuery,
+  useDeleteWishlistMutation,
 } = bookApi;

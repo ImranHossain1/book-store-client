@@ -60,7 +60,11 @@ export default function BookReview({ id }: IProps) {
               <AvatarImage src="https://github.com/shadcn.png" />
               <AvatarFallback>CN</AvatarFallback>
             </Avatar>
-            <p>{review.message}</p>
+            <div className="flex-grow">
+              {' '}
+              {/* Use flex-grow to make message take up remaining space */}
+              <p>{review.message}</p>
+            </div>
           </div>
         ))}
       </div>

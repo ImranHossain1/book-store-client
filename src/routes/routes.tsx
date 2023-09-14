@@ -9,6 +9,8 @@ import AddNewBook from '@/pages/AddBooks';
 import SignUp from '@/pages/Signup';
 import SignIn from '@/pages/SignIn';
 import PrivateRoute from './PrivateRoute';
+import WishList from '@/pages/WishList';
+import ReadList from '@/pages/ReadList';
 
 const routes = createBrowserRouter([
   {
@@ -36,6 +38,22 @@ const routes = createBrowserRouter([
         element: (
           <PrivateRoute>
             <BookDetails />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/wishlist',
+        element: (
+          <PrivateRoute>
+            <WishList />
+          </PrivateRoute>
+        ),
+      },
+      {
+        path: '/readlist',
+        element: (
+          <PrivateRoute>
+            <ReadList />
           </PrivateRoute>
         ),
       },
