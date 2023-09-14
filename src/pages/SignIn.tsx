@@ -2,11 +2,15 @@ import { useSignInUserMutation } from '@/redux/features/users/authApi';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie';
+import Cookies from 'js-cookie'; // Import js-cookie library
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { loginUser } from '@/redux/features/users/userSlice';
+import { useSigninUserMutation } from '@/redux/features/auth/login';
+
 const SignIn = () => {
   const dispatch = useAppDispatch();
+  const [userDb, { isSuccess, isLoading: databaseLoading, data }] =
+    useSigninUserMutation();
   const { user, isLoading } = useAppSelector((state) => state.user);
   const navigate = useNavigate();
   const location = useLocation();
@@ -15,6 +19,7 @@ const SignIn = () => {
     email: '',
     password: '',
   });
+
   const handleCreateUser = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     const { email, password } = formData;
@@ -24,15 +29,23 @@ const SignIn = () => {
         password: password,
       },
     };
+    userDb(options);
     dispatch(loginUser({ email: email, password: password }));
   };
-  //console.log(data?.data?.accessToken);
+
   useEffect(() => {
-    if (user.email && !isLoading) {
+    // Check if the accessToken exists in the response data
+    if (data?.data?.accessToken) {
+      // Add the accessToken to cookies with the name "refreshToken"
+      Cookies.set('refreshToken', data.data.accessToken, { expires: 7 }); // Set the expiration date as needed
+    }
+
+    if (user.email && !isLoading && isSuccess) {
       navigate(from, { replace: true });
     }
-  }, [user.email, isLoading]);
-  if (isLoading) {
+  }, [user.email, isLoading, data?.data?.accessToken]);
+
+  if (isLoading || databaseLoading) {
     return (
       <div className="flex justify-center items-center h-screen">
         <div className="animate-spin rounded-full border-t-4 border-blue-500 border-opacity-25 h-16 w-16"></div>
@@ -40,14 +53,15 @@ const SignIn = () => {
       </div>
     );
   }
+
   const handleInputChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = event.target;
     setFormData({
       ...formData,
       [name]: value,
     });
-    return;
   };
+
   return (
     <div className="w-full md:my-12 my-8">
       <form

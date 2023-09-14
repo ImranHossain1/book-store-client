@@ -41,7 +41,6 @@ const Books = () => {
   }) => {
     setSearchTerm(e.target.value);
   };
-  console.log(data);
   const total = Math.ceil(data.meta.total / data.meta.limit);
 
   // Create an array of numbers from 1 to total

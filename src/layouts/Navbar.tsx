@@ -7,7 +7,7 @@ import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/Firebase/firebase';
 import { setUser } from '@/redux/features/users/userSlice';
-
+import Cookies from 'js-cookie';
 export default function Navbar() {
   const [nav, setNav] = useState(true);
   const { user } = useAppSelector((state) => state.user);
@@ -15,6 +15,7 @@ export default function Navbar() {
   const handleLogout = () => {
     signOut(auth).then(() => {
       dispatch(setUser(null));
+      Cookies.remove('refreshToken');
     });
   };
 
@@ -62,7 +63,6 @@ export default function Navbar() {
                   <li
                     onClick={handleLogout}
                     className="p-3 hover:text-[#02BBFB]"
-  
                   >
                     Logout
                   </li>

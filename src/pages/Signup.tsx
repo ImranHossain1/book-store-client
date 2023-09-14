@@ -4,9 +4,9 @@ import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import React, { useEffect, useState } from 'react';
 import toast from 'react-hot-toast';
 import { useNavigate } from 'react-router-dom';
-
+import Cookies from 'js-cookie';
 const SignUp = () => {
-  const [book, { isSuccess, isLoading: databaseLoading }] =
+  const [userDb, { isSuccess, isLoading: databaseLoading, data }] =
     useSignupUserMutation();
   const dispatch = useAppDispatch();
   const { user, isLoading } = useAppSelector((state) => state.user);
@@ -37,13 +37,18 @@ const SignUp = () => {
         email: email,
       },
     };
-    book(options);
+    userDb(options);
     dispatch(createUser({ email: email, password: password }));
   };
 
   useEffect(() => {
     if (isSuccess === true) {
       toast.success('Book Added Successfully!');
+
+      // Store refreshToken in cookies after successful signup
+      if (data?.data?.accessToken) {
+        Cookies.set('refreshToken', data.data.accessToken, { expires: 7 });
+      }
       // Reset the input fields
       setFormData({
         firstName: '',
