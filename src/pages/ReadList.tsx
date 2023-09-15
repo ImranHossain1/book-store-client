@@ -1,10 +1,7 @@
-import React, { useEffect, useState } from 'react';
-import {
-  useDeleteWishlistMutation,
-  useGetWishlistQuery,
-} from '@/redux/features/books/bookApi';
+import { useEffect, useState } from 'react';
+
 import toast from 'react-hot-toast';
-import { PlanlistItem, WishlistItem } from '@/types/globalTypes';
+import { PlanlistItem } from '@/types/globalTypes';
 import {
   useDeletePlanlistMutation,
   useGetPlanlistQuery,
@@ -23,7 +20,10 @@ const ReadList = () => {
     if (isSuccess === true) {
       toast.success('Reading Plan Cancel!');
     }
-  }, [isSuccess]);
+    if (updateSuccess === true) {
+      toast.success('Reading Plan Cancel!');
+    }
+  }, [isSuccess, updateSuccess]);
   const handleRemoveFromPlanlist = async (itemId: string) => {
     deletePlan(itemId);
     closeModal();

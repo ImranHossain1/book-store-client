@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { useSignupUserMutation } from '@/redux/features/users/userApi';
 import { createUser } from '@/redux/features/users/userSlice';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
@@ -9,7 +10,7 @@ const SignUp = () => {
   const [userDb, { isSuccess, isLoading: databaseLoading, data }] =
     useSignupUserMutation();
   const dispatch = useAppDispatch();
-  const { user, isLoading } = useAppSelector((state) => state.user);
+  const { isLoading } = useAppSelector((state) => state.user);
   const [role, setRole] = useState('reader');
   const [formData, setFormData] = useState({
     firstName: '',

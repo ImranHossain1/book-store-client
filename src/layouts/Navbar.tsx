@@ -2,14 +2,12 @@ import { Link } from 'react-router-dom';
 import { Button } from '../components/ui/button';
 
 import logo from '../assets/images/book-logo.png';
-import { useState } from 'react';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { signOut } from 'firebase/auth';
 import { auth } from '@/Firebase/firebase';
 import { setUser } from '@/redux/features/users/userSlice';
 import Cookies from 'js-cookie';
 export default function Navbar() {
-  const [nav, setNav] = useState(true);
   const { user } = useAppSelector((state) => state.user);
   const dispatch = useAppDispatch();
   const handleLogout = () => {

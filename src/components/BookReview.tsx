@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-unused-vars */
 import { ChangeEvent, FormEvent, useState } from 'react';
 import { Button } from './ui/button';
 import { Textarea } from './ui/textarea';
@@ -28,7 +29,7 @@ export default function BookReview({ id }: IProps) {
     };
 
     try {
-      const response = await postCommentMutation({ id, data: commentData });
+      await postCommentMutation({ id, data: commentData });
       setInputValue('');
     } catch (error) {
       console.error('Error posting comment:', error);

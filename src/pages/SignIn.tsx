@@ -1,8 +1,8 @@
-import { useSignInUserMutation } from '@/redux/features/users/authApi';
+/* eslint-disable react-hooks/exhaustive-deps */
+
 import React, { useEffect, useState } from 'react';
-import toast from 'react-hot-toast';
 import { useLocation, useNavigate } from 'react-router-dom';
-import Cookies from 'js-cookie'; // Import js-cookie library
+import Cookies from 'js-cookie';
 import { useAppDispatch, useAppSelector } from '@/redux/hook';
 import { loginUser } from '@/redux/features/users/userSlice';
 import { useSigninUserMutation } from '@/redux/features/auth/login';

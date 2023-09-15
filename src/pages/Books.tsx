@@ -15,7 +15,7 @@ const Books = () => {
     sortOrder,
     searchTerm,
   };
-  const { data, isLoading, error } = useGetBooksQuery(options);
+  const { data, isLoading } = useGetBooksQuery(options);
 
   if (isLoading) {
     return (

@@ -2,7 +2,6 @@ import {
   useSingleBookQuery,
   useUpdateBookMutation,
 } from '@/redux/features/books/bookApi';
-import { useAppSelector } from '@/redux/hook';
 import { useState } from 'react';
 import { toast } from 'react-hot-toast';
 import { useNavigate, useParams } from 'react-router-dom';
