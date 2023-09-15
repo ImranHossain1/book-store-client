@@ -64,7 +64,9 @@ Before you begin, ensure you have the following installed:
    npm install
    ```
 
-## Users
+## Usage
+
+### Users
 
 Users can:
 
