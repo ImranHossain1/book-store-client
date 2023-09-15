@@ -1,9 +1,12 @@
 # Book Store ReactJS App with Redux
 
 **Live Client Site Link**: [https://mydream-book-store.netlify.app/](https://mydream-book-store.netlify.app/)
+
 **Live Server Site Link**: [https://book-world-server.vercel.app/api/v1/](https://book-world-server.vercel.app/api/v1/)
-**Github client site Link**: [https://github.com/ImranHossain1/book-store-client](https://github.com/ImranHossain1/book-store-client)
-**Github Server site Link**: [https://github.com/ImranHossain1/book-world-server](https://github.com/ImranHossain1/book-world-server)
+
+**GitHub Client Site Link**: [https://github.com/ImranHossain1/book-store-client](https://github.com/ImranHossain1/book-store-client)
+
+**GitHub Server Site Link**: [https://github.com/ImranHossain1/book-world-server](https://github.com/ImranHossain1/book-world-server)
 
 ## Table of Contents
 
