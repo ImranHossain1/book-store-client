@@ -2,19 +2,11 @@ import Banner from '@/components/Banner';
 import BookCard from '@/components/BookCard';
 import { useGetBooksQuery } from '@/redux/features/books/bookApi';
 import { IBooks } from '@/types/globalTypes';
-import { useState } from 'react';
 
 const Home = () => {
-  const [page] = useState(1); // Default page number
-  const [limit] = useState(10); // Default limit
-  const [sortOrder] = useState('asc'); // Default sorting order
-  const [searchTerm] = useState(''); // Default sorting order
-
   const options = {
-    page,
     limit: 9,
-    sortOrder: 'desc',
-    searchTerm,
+    sortOrder: 'desc'
   };
   const { data: books, isLoading } = useGetBooksQuery(options);
   if (isLoading) {

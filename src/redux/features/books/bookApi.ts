@@ -1,10 +1,10 @@
 import { api } from '@/redux/api/apiSlice';
 import Cookies from 'js-cookie';
 type IBookSort = {
-  page: number;
-  limit: number;
-  sortOrder: string;
-  searchTerm: string;
+  page?: number;
+  limit?: number;
+  sortOrder?: string;
+  searchTerm?: string;
 };
 const bookApi = api.injectEndpoints({
   endpoints: (builder) => ({
