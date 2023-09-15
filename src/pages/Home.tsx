@@ -5,8 +5,10 @@ import { IBooks } from '@/types/globalTypes';
 
 const Home = () => {
   const options = {
+    page: 1,
+    searchTerm: '',
     limit: 9,
-    sortOrder: 'desc'
+    sortOrder: 'desc',
   };
   const { data: books, isLoading } = useGetBooksQuery(options);
   if (isLoading) {
