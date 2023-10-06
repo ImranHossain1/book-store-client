@@ -41,10 +41,10 @@ export default function Navbar() {
 
               {!user.email && (
                 <>
-                  <li className="p-3 hover:text-[#02BBFB]">
+                  <li className="p-3 text-[#041EFA] hover:text-[#02BBFB]">
                     <Link to="/signIn">Sign In</Link>
                   </li>
-                  <li className="p-3 hover:text-[#02BBFB]">
+                  <li className="p-3 text-[#041EFA]  hover:text-[#02BBFB]">
                     <Link to="/signUp">Sign Up</Link>
                   </li>
                 </>
@@ -66,13 +66,12 @@ export default function Navbar() {
                       <Link to="/readlist">Reading List</Link>
                     </Button>
                   </li>
-
-                  <li
+                  <Button
                     onClick={handleLogout}
-                    className="p-3 hover:text-[#02BBFB]"
+                    className="p-3 cursor-pointer bg-red-400 hover:bg-red-600"
                   >
                     Logout
-                  </li>
+                  </Button>
                 </>
               )}
             </ul>
